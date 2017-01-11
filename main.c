@@ -1,16 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "calendarEvent.h"
 
-struct calendarEvent_t {
-	char type;
-	char title[11];
-	char date[11];
-	char time[6];
-	char location[11];
-};
-void printCalendarEvent(calendarEvent_t c);
-int parseEmail(char * buffer, calendarEvent_t *c);
+void printCalendarEvent(struct calendarEvent_t c);
+int parseEmail(char * buffer, struct calendarEvent_t *c);
 
 main(int argc, char *argv[]){
 	
@@ -31,11 +25,11 @@ main(int argc, char *argv[]){
 	return(0);
 }
 
-void printCalendarEvent(calendarEvent_t c){
+void printCalendarEvent(struct calendarEvent_t c){
 	printf("%c,%s,%s,%s,%s\n",c.type, c.title, c.date, c.time, c.location);
 }
 
-int parseEmail(char * buffer, calendarEvent_t *c){ // returns -1 if doesn't have everything
+int parseEmail(char * buffer, struct calendarEvent_t *c){ // returns -1 if doesn't have everything
 	char *pch = strtok (buffer," ,");
 	unsigned int counter = 0;
   		while (pch != NULL){
