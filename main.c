@@ -3,7 +3,6 @@
 #include <string.h>
 #include "calendarEvent.h"
 
-void printCalendarEvent(struct calendarEvent_t c);
 int parseEmail(char * buffer, struct calendarEvent_t *c);
 
 main(int argc, char *argv[]){
@@ -25,9 +24,7 @@ main(int argc, char *argv[]){
 	return(0);
 }
 
-void printCalendarEvent(struct calendarEvent_t c){
-	printf("%c,%s,%s,%s,%s\n",c.type, c.title, c.date, c.time, c.location);
-}
+
 
 int parseEmail(char * buffer, struct calendarEvent_t *c){ // returns -1 if doesn't have everything
 	char *pch = strtok (buffer," ,");

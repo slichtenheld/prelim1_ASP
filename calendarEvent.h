@@ -9,4 +9,12 @@ struct calendarEvent_t {
 	char location[11];
 };
 
+void printCalendarEvent(struct calendarEvent_t c){
+	printf("%c,%s,%s,%s,%s\n",c.type, c.title, c.date, c.time, c.location);
+}
+
+void printCalEvDebug(struct calendarEvent_t c){
+	printf("Type: %c\nTitle: %s\nDate: %s\nTime: %s\nlocation: %s\n\n",c.type, c.title, c.date, c.time, c.location);
+}
+
 #endif

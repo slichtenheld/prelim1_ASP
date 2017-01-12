@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "calendarEvent.h"
 
 //read in line from stdin, returns -1 if misread input
-int readInput(char* buffer);
+int readInput(char** buffer);
 
 //parse input and return event, returns -1 if faulty input
 int parseInput(char *buffer, struct calendarEvent_t *c);
@@ -15,14 +16,24 @@ main(int argc, char *argv[]){
 
 	// reusing buffer and event throughout process
 	char *buffer = NULL; // getline will allocate space for buffer
+	long unsigned int len;
 	struct calendarEvent_t c;
 
-	while(readInput(&buffer) > 0){ // reads in line from stdin
-		 if (parseInput(buffer, c) > 0) { // if proper input
+	while(readInput(&buffer) != -1){ // reads in line from stdin
+		//printf("Buffer: %s\n", buffer);
+		 if ( parseInput(buffer, &c) ) { // proper input returns 1
+		 	//printCalEvDebug(c);
 
+		 	switch(c.type){
+				case 'C': printf("Email create type\n");break; //add event to data structure
+				case 'D': printf("Email delete type\n");break; //delete event from data structure
+				case 'X': printf("Email modify type\n");break; //modify event in data structure
+				default: printf("incompatible calendarEvent type\n");
+			}
 		 }
 	}
 	
+	/*
 	while(charsRead = getline(&buffer,&len,stdin) > 0 ){ // read in line till EoF
 		if (parseEmail(buffer, &c) != -1) printCalendarEvent(c);
 			switch(c.type){
@@ -32,14 +43,15 @@ main(int argc, char *argv[]){
 				default: perror("unsupported calendarEvent command");
 			}
 	}
+	*/
 
 	free(buffer); // need to free buffer allocated by getline!!!!
 	return(0);
 }
 
-int readInput(char* buffer){
+int readInput(char** buffer){
 	long unsigned int len; // length of buffer
-	return getline(&buffer,&len,stdin);
+	return getline(buffer,&len,stdin);
 }
 
 int parseInput(char *buffer, struct calendarEvent_t *c){
@@ -52,11 +64,12 @@ int parseInput(char *buffer, struct calendarEvent_t *c){
 		    	case 3: memcpy(c->date,pch, strlen(pch)+1); break;
 		    	case 4: memcpy(c->time,pch, strlen(pch)+1); break;
 		    	case 5: memcpy(c->location,pch, strlen(pch)+1); break;
+		    	default: perror("error parseinput");
 		    }
 		    pch = strtok (NULL, " ,");
 		}
 	if (counter < 6) return -1;
-	return 0;
+	return true;
 }
 
 // some data structure needed
