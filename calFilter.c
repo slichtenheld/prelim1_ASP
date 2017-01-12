@@ -23,11 +23,16 @@ main(int argc, char *argv[]){
 		//printf("Buffer: %s\n", buffer);
 		 if ( parseInput(buffer, &c) ) { // proper input returns 1
 		 	//printCalEvDebug(c);
-
 		 	switch(c.type){
-				case 'C': printf("Email create type\n");break; //add event to data structure
-				case 'D': printf("Email delete type\n");break; //delete event from data structure
-				case 'X': printf("Email modify type\n");break; //modify event in data structure
+				case 'C': 
+					printf("Email create type\n");
+					break; //add event to data structure
+				case 'D': 
+					printf("Email delete type\n");
+					break; //delete event from data structure
+				case 'X': 
+					printf("Email modify type\n");
+					break; //modify event in data structure
 				default: printf("incompatible calendarEvent type\n");
 			}
 		 }
