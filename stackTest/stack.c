@@ -5,7 +5,7 @@
 
 struct Stack_t {
 	int count;
-	int data[CAPACITY];
+	void* data[CAPACITY];
 };
 
 Stack_T Stack_new(void) {
@@ -20,13 +20,13 @@ int Stack_empty(Stack_T stk) {
 	return (stk->count == 0);
 }
 
-void Stack_push(Stack_T stk, int i) {
+void Stack_push(Stack_T stk, void *i) {
 	assert(stk);
 	assert(stk->count < CAPACITY);
 	stk->data[stk->count++] = i;
 }
 
-int Stack_pop(Stack_T stk) {
+void *Stack_pop(Stack_T stk) {
 	assert(stk && stk->count > 0);
 	return stk->data[--(stk->count)];
 }
