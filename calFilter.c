@@ -13,6 +13,11 @@ main(int argc, char *argv[]){
 	
 	// initialize data structure
 
+	// set function pointers to work for specific data structure
+	int (*addCalEvent)(struct calendarEvent c); 
+	int (*delCalEvent)(struct calendarEvent c);
+	int (*modCalEvent)(struct calendarEvent c);
+
 
 	// reusing buffer and event throughout process
 	char *buffer = NULL; // getline will allocate space for buffer
@@ -26,6 +31,7 @@ main(int argc, char *argv[]){
 		 	switch(c.type){
 				case 'C': 
 					printf("Email create type\n");
+
 					break; //add event to data structure
 				case 'D': 
 					printf("Email delete type\n");
