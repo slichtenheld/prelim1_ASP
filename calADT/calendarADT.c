@@ -49,7 +49,14 @@ void Calendar_del(Calendar_T cal, CalendarItem_T item){
 	if (cal==NULL) perror("DEL, calendar is null");
 
 	// check if anythings are equal
-	// shift everything up starting at match
+	// replace matching item with last item from array
+	for(int i = 0; i < cal->count; i++){
+		if (cmp_calItem(*(cal->data[i]), *item)){
+			cal->data[i] = cal->data[cal->count - 1];
+			cal->count = cal->count - 1;
+			break;
+		}
+	}
 }
 
 void Calendar_mod(Calendar_T cal, CalendarItem_T item){
@@ -57,15 +64,22 @@ void Calendar_mod(Calendar_T cal, CalendarItem_T item){
 	// check if anything is equal
 	// replace time and location
 	//print out "date:location"
+	for(int i = 0; i < cal->count; i++){
+		if (cmp_calItem(*(cal->data[i]), *item)){
+			memcpy(cal->data[i]->time,item->time, strlen(item->time)+1);
+			memcpy(cal->data[i]->location,item->location, strlen(item->location)+1);
+			break;
+		}
+	}
 }
 
 void Calendar_print(Calendar_T cal){
 	if (cal==NULL) perror("MOD, calendar is null");
+	
 	for (int i = 0; i < cal->count; i++){
 		print_calItem(*(cal->data[i]));
 	}
 }
-
 
 /****private methods****/
 void print_calItem(struct CalendarItem_t c){
@@ -74,7 +88,7 @@ void print_calItem(struct CalendarItem_t c){
 
 int cmp_calItem(struct CalendarItem_t c, struct CalendarItem_t d){
 	if (strcmp(c.title,d.title) != 0 ||
-		strcmp(c.date,d.date)   !=0) {
+		strcmp(c.date,d.date)   != 0) {
 		return 0;
 	}
 	else return 1;
