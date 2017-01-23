@@ -1,62 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "calendarEvent.h"
+#include "calADT/calendarADT.h"
 
 //read in line from stdin, returns -1 if misread input
 int readInput(char** buffer);
 
-//parse input and return event, returns -1 if faulty input
-int parseInput(char *buffer, struct calendarEvent_t *c);
+//parse input and return event, returns C, D, X or NULL
+char parseInput(char *buffer, struct CalendarItem_t *c);
 
-main(int argc, char *argv[]){
+int main(int argc, char *argv[]){
 	
-	// initialize data structure
-
+	/* initialize data structure */
+	Calendar_T cal = Calendar_new();
+	
 	// set function pointers to work for specific data structure
-	int (*addCalEvent)(struct calendarEvent c); 
-	int (*delCalEvent)(struct calendarEvent c);
-	int (*modCalEvent)(struct calendarEvent c);
+	// int (*addCalEvent)(struct calendarEvent c); 
+	// int (*delCalEvent)(struct calendarEvent c);
+	// int (*modCalEvent)(struct calendarEvent c);
 
 
 	// reusing buffer and event throughout process
 	char *buffer = NULL; // getline will allocate space for buffer
 	long unsigned int len;
-	struct calendarEvent_t c;
+	
 
 	while(readInput(&buffer) != -1){ // reads in line from stdin
 		//printf("Buffer: %s\n", buffer);
-		 if ( parseInput(buffer, &c) ) { // proper input returns 1
+		 //if (  != NULL ) { // proper input returns char
 		 	//printCalEvDebug(c);
-		 	switch(c.type){
+			struct CalendarItem_t *c = malloc(sizeof *c);
+		 	//printf("test\n");
+		 	switch(parseInput(buffer, c)){
 				case 'C': 
 					printf("Email create type\n");
-
+					print_calItem(*c);
+					Calendar_add(cal, c);
+					printf("- - - - - - - - - - - -\n");
+					Calendar_print(cal);
+					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
 					break; //add event to data structure
 				case 'D': 
 					printf("Email delete type\n");
+					Calendar_del(cal, c);
+					print_calItem(*c);
+					printf("- - - - - - - - - - - -\n");
+					Calendar_print(cal);
+					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
 					break; //delete event from data structure
 				case 'X': 
 					printf("Email modify type\n");
+					Calendar_mod(cal, c);
+					print_calItem(*c);
+					printf("- - - - - - - - - - - -\n");
+					Calendar_print(cal);
+					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
 					break; //modify event in data structure
 				default: printf("incompatible calendarEvent type\n");
 			}
-		 }
+		 //}
 	}
-	
-	/*
-	while(charsRead = getline(&buffer,&len,stdin) > 0 ){ // read in line till EoF
-		if (parseEmail(buffer, &c) != -1) printCalendarEvent(c);
-			switch(c.type){
-				case 'C': break; //add event to data structure
-				case 'D': break; //delete event from data structure
-				case 'X': break; //modify event in data structure
-				default: perror("unsupported calendarEvent command");
-			}
-	}
-	*/
 
 	free(buffer); // need to free buffer allocated by getline!!!!
+	printf("_________________________\n");
+	Calendar_print(cal);
 	return(0);
 }
 
@@ -65,22 +72,24 @@ int readInput(char** buffer){
 	return getline(buffer,&len,stdin);
 }
 
-int parseInput(char *buffer, struct calendarEvent_t *c){
+char parseInput(char *buffer, struct CalendarItem_t *c){
+	char temp;
 	char *pch = strtok (buffer," ,");
 	unsigned int counter = 0;
   		while (pch != NULL){
 		    switch(++counter) {
-		    	case 1: c->type = pch[0]; break;
+		    	case 1: temp = pch[0]; break;
 		    	case 2: memcpy(c->title,pch, strlen(pch)+1); break;
 		    	case 3: memcpy(c->date,pch, strlen(pch)+1); break;
 		    	case 4: memcpy(c->time,pch, strlen(pch)+1); break;
 		    	case 5: memcpy(c->location,pch, strlen(pch)+1); break;
-		    	default: perror("error parseinput");
+		    	//case 6: printf("Case 6 triggered\n"); break;
+		    	//default: perror("error parseinput");
 		    }
 		    pch = strtok (NULL, " ,");
 		}
-	if (counter < 6) return -1;
-	return true;
+	if (counter < 6) return 0;
+	return temp;
 }
 
 // some data structure needed

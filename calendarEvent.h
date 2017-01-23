@@ -14,7 +14,7 @@ void printCalendarEvent(struct calendarEvent_t c){
 }
 
 void printCalEvDebug(struct calendarEvent_t c){
-	printf("Type: %c\nTitle: %s\nDate: %s\nTime: %s\nlocation: %s\n\n",c.type, c.title, c.date, c.time, c.location);
+	printf("Type: %c, Title: %s, Date: %s, Time: %s, location: %s\n\n",c.type, c.title, c.date, c.time, c.location);
 }
 
 #endif

@@ -16,7 +16,7 @@ Calendar_T Calendar_new(void){
 	
 	Calendar_T cal; 
 	
-	printf("Size of Calendar: %lu\n", sizeof *cal);
+	//printf("Size of Calendar: %lu\n", sizeof *cal);
 	cal = malloc(sizeof *cal);
 
 	if (cal==NULL) perror("NEW, calendar is null");
@@ -34,7 +34,10 @@ int Calendar_full(Calendar_T cal){
 	return (cal->count == CAPACITY-1);
 }
 
+
+
 void Calendar_add(Calendar_T cal, CalendarItem_T item){
+
 	if (cal==NULL) {
 		perror("ADD, calendar is null");
 		return;
@@ -48,8 +51,19 @@ void Calendar_add(Calendar_T cal, CalendarItem_T item){
 void Calendar_del(Calendar_T cal, CalendarItem_T item){
 	if (cal==NULL) perror("DEL, calendar is null");
 
-	// check if anythings are equal
-	// replace matching item with last item from array
+	// check if anythings are equal, if it is shift everything up
+	for(int i = 0; i < cal->count; i++){
+		if (cmp_calItem(*(cal->data[i]), *item)){
+			for (;i < cal->count -1; i++){
+				cal->data[i] = cal->data[i + 1];
+			}
+			cal->count = cal->count - 1;
+			break;
+		}
+	}
+
+	// replace matching item with last item from array, method could generate different results
+	/*
 	for(int i = 0; i < cal->count; i++){
 		if (cmp_calItem(*(cal->data[i]), *item)){
 			cal->data[i] = cal->data[cal->count - 1];
@@ -57,6 +71,7 @@ void Calendar_del(Calendar_T cal, CalendarItem_T item){
 			break;
 		}
 	}
+	*/
 }
 
 void Calendar_mod(Calendar_T cal, CalendarItem_T item){
@@ -79,11 +94,12 @@ void Calendar_print(Calendar_T cal){
 	for (int i = 0; i < cal->count; i++){
 		print_calItem(*(cal->data[i]));
 	}
+
 }
 
 /****private methods****/
 void print_calItem(struct CalendarItem_t c){
-	printf("Title: %s\nDate: %s\nTime: %s\nlocation: %s\n\n", c.title, c.date, c.time, c.location);
+	printf("Title: %s, Date: %s, Time: %s, location: %s\n\n", c.title, c.date, c.time, c.location);
 }
 
 int cmp_calItem(struct CalendarItem_t c, struct CalendarItem_t d){
