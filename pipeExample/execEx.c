@@ -6,7 +6,7 @@
 
 int main (int argc, char * argv[]) {
 
-	int fd[2];
+    int fd[2];
 	pid_t cpid1, cpid2;
 	char buf[5];
 
@@ -33,7 +33,7 @@ int main (int argc, char * argv[]) {
 			printf("Parent Exiting\n");
     		exit(EXIT_SUCCESS);
 	  	}
-	  	else if ( cpid1 == 0 ) { /* child 2 */
+	  	else if ( cpid2 == 0 ) { /* child 2 */
 	  		close(fd[1]);		/* Close unused write end, child 2 only reading from pipe */
     		if ( dup2(fd[0], 0) == -1 ) {		/* redirect pipe to stdin */
     			perror("dup2 error child 2");
@@ -50,7 +50,7 @@ int main (int argc, char * argv[]) {
     			_exit(EXIT_FAILURE);
 	  		}
 	  	}
-	  	else if ( cpid1 == -1 ) { /* error */
+	  	else if ( cpid2 == -1 ) { /* error */
 	  		perror("fork error\n");
     		exit(EXIT_FAILURE);
 	  	}
