@@ -14,6 +14,7 @@ int main(int argc, char *argv[]){
 	/* initialize data structure */
 	Calendar_T cal = Calendar_new();
 	
+	/* TODO: implement later */
 	// set function pointers to work for specific data structure
 	// int (*addCalEvent)(struct calendarEvent c); 
 	// int (*delCalEvent)(struct calendarEvent c);
@@ -26,43 +27,28 @@ int main(int argc, char *argv[]){
 	
 
 	while(readInput(&buffer) != -1){ // reads in line from stdin
-		//printf("Buffer: %s\n", buffer);
-		 //if (  != NULL ) { // proper input returns char
-		 	//printCalEvDebug(c);
 			struct CalendarItem_t *c = malloc(sizeof *c);
-		 	//printf("test\n");
 		 	switch(parseInput(buffer, c)){
-				case 'C': 
-					printf("Email create type\n");
-					print_calItem(*c);
+				case 'C': /* add event to data structure */
 					Calendar_add(cal, c);
-					printf("- - - - - - - - - - - -\n");
-					Calendar_print(cal);
-					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
-					break; //add event to data structure
-				case 'D': 
-					printf("Email delete type\n");
+					break; 
+				case 'D': /* delete event from data structure */
 					Calendar_del(cal, c);
-					print_calItem(*c);
-					printf("- - - - - - - - - - - -\n");
-					Calendar_print(cal);
-					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
-					break; //delete event from data structure
-				case 'X': 
-					printf("Email modify type\n");
+					break; 
+				case 'X': /* modify event in data structure */
 					Calendar_mod(cal, c);
+					break; 
+					/* 
 					print_calItem(*c);
 					printf("- - - - - - - - - - - -\n");
 					Calendar_print(cal);
 					printf("_ _ _ _ _ _ _ _ _ _ _ _ _\n");
-					break; //modify event in data structure
+					*/ 
 				default: printf("incompatible calendarEvent type\n");
 			}
-		 //}
 	}
 
 	free(buffer); // need to free buffer allocated by getline!!!!
-	printf("_________________________\n");
 	Calendar_print(cal);
 	return(0);
 }
