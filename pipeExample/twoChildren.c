@@ -29,9 +29,9 @@ int main(int argc, char *argv[]){
 	if ( cpid1 > 0 ) { /* parent */
   		printf("PID: %d | PARENT\n", getpid());
 
-  		cpid1 = fork(); /* creates second child */
+  		cpid2 = fork(); /* creates second child */
 
-		if ( cpid1 > 0 ) { /* parent */
+		if ( cpid2 > 0 ) { /* parent */
   			/* All of parents code should be here so that isn't run by children */
 
 	  		printf("PID: %d | PARENT\n", getpid());
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
   			wait(NULL);     /* Wait for children */
     		exit(EXIT_SUCCESS);
 	  	}
-	  	else if ( cpid1 == 0 ) { /* child 2 */
+	  	else if ( cpid2 == 0 ) { /* child 2 */
 	  		printf("PID: %d, PPID: %d | CHILD2\n", getpid(), getppid());
 	  		close(fd[0]);          /* Close unused read end */
     		write(fd[1], argv[1], strlen(argv[1]));
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
     		wait(NULL);                /* Wait for child */
     		exit(EXIT_SUCCESS);
 	  	}
-	  	else if ( cpid1 == -1 ) { /* error */
+	  	else if ( cpid2 == -1 ) { /* error */
 	  		perror("fork error\n");
     		exit(EXIT_FAILURE);
 	  	}
@@ -70,5 +70,4 @@ int main(int argc, char *argv[]){
   		perror("fork error\n");
     	exit(EXIT_FAILURE);
   	}
-
 }

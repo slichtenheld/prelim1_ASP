@@ -27,7 +27,6 @@ int main (int argc, char * argv[]) {
 	  		
   			close(fd[0]);  /* Parent does not need access to pipe */
   			close(fd[1]);
-  			//wait(NULL);     /* Wait for children */
   			waitpid(cpid1,0,0);
   			waitpid(cpid2,0,0);
 			printf("Parent Exiting\n");
@@ -40,10 +39,7 @@ int main (int argc, char * argv[]) {
 				exit(EXIT_FAILURE);
 	  		}
 	  		close(fd[0]);
-    		//write(fd[1], argv[1], strlen(argv[1]));
-    		//close(fd[1]);          /* Reader will see EOF */
-    		//wait(NULL);                /* Wait for child */
-    		//_exit(EXIT_SUCCESS);
+
 	  		printf("I am Child 2\n");
 	  		if ( execl("testprog", "testprog", (char *) NULL) == -1 ) {
 	  			perror("exec error");
@@ -64,18 +60,12 @@ int main (int argc, char * argv[]) {
 			_exit(EXIT_FAILURE);
   		}		
   		close(fd[1]);
-    	//while (read(fd[0], buf, 1) > 0) // reads from buffer
-      	
-      	//write(STDOUT_FILENO, buf, 1);
 
-    	//write(STDOUT_FILENO, "\n", 1);
-    	//close(fd[0]);
   		if ( execl("testprog", "testprog", (char *) NULL) == -1 ) {
 			perror("exec error child 1");
 			exit(EXIT_FAILURE);
 		}
 
-    	//_exit(EXIT_SUCCESS); /* use _exit() for child processes */
   	}
   	else if ( cpid1 == -1 ) { /* error */
   		perror("fork error\n");
@@ -83,17 +73,3 @@ int main (int argc, char * argv[]) {
   	}
 
 }
-
-
-/*
-	pid_t cpid1, cpid2;
-
-	//execl("/bin/ls", "ls", NULL);
-	int r = execl("testprog", "testprog", (char *) NULL);
-
-	if (r == -1) { 
-    	perror("exec error");
-    	exit(EXIT_FAILURE);
-  	}
-
-*/
