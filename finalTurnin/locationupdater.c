@@ -48,7 +48,7 @@ int main (int argc, char * argv[]) {
 	  		close(fd[0]);
 
 	  		DEBUG_PRINT(("I am Child 2\n"));
-	  		if ( execl("../calFilter", "../calFilter", (char *) NULL) == -1 ) {
+	  		if ( execl("calendarfilter", "calendarfilter", (char *) NULL) == -1 ) {
 	  			perror("exec error");
     			_exit(EXIT_FAILURE);
 	  		}
@@ -68,7 +68,7 @@ int main (int argc, char * argv[]) {
   		}		
   		close(fd[1]);
 
-  		if ( execl("../emailFilter", "../emailFilter", (char *) NULL) == -1 ) {
+  		if ( execl("emailfilter", "emailfilter", (char *) NULL) == -1 ) {
 			perror("exec error child 1");
 			exit(EXIT_FAILURE);
 		}

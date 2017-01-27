@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "calADT/calendarADT.h"
+#include "calendarADT.h"
 
 //read in line from stdin, returns -1 if misread input
 int readInput(char** buffer);
